@@ -71,8 +71,14 @@ class ProductManager {
         try {
             const data = await fs.readFile(this.path, "utf8");
             let products = JSON.parse(data);
-            products = products.filter((prod) => String(prod.id) !== String(id))
-            await fs.writeFile(this.path, JSON.stringify(products, null, 2))
+            const existe = products.some((prod) => String(prod.id) === String(id))
+            if (existe){
+                products = products.filter((prod) => String(prod.id) !== String(id))
+                await fs.writeFile(this.path, JSON.stringify(products, null, 2))
+                return true;
+            }else{
+                return false;
+            }
         } catch (error) {
 
         }

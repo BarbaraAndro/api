@@ -22,17 +22,6 @@
     "thumbnails": "d"
   },
   {
-    "id": "8817393b-3523-4e1c-b7e5-b7897282f6eb",
-    "title": "producto",
-    "description": "eliminar",
-    "code": "s",
-    "price": 1,
-    "status": true,
-    "stock": 2,
-    "category": "d",
-    "thumbnails": "d"
-  },
-  {
     "id": "721b51af-14fb-4235-9887-1b9eb4acae44",
     "title": "nuevo prod",
     "description": "este producto es",
@@ -45,23 +34,12 @@
   },
   {
     "id": "8519b133-069d-451e-a55d-2495f99a79e4",
-    "title": "nuevo prod",
+    "title": "ultimo productooo",
     "description": "este producto es",
     "code": "s",
     "price": 1,
     "status": true,
-    "stock": 2,
-    "category": "d",
-    "thumbnails": "d"
-  },
-  {
-    "id": "d635f6fc-d456-4afc-88a2-40ee85f3c176",
-    "title": "nuevo prod",
-    "description": "este producto es",
-    "code": "s",
-    "price": 1,
-    "status": true,
-    "stock": 2,
+    "stock": 11,
     "category": "d",
     "thumbnails": "d"
   }

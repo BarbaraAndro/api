@@ -1,21 +1,29 @@
 const express = require('express')
-const path = require('path')
-const ProductManager = require('./productManager');
-const CartManager = require('./cartManager')
+//const path = require('path')
+//const ProductManager = require('./src/managers/productManager');
+//const CartManager = require('./cartManager')
+const productsRouter = require("./src/routes/products.routes");
+const cartsRouter = require("./src/routes/carts.routes");
 
 const app = express()
 const port = 8080
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const routeProduct = path.join(__dirname, "data", "products.json")
-const productManager = new ProductManager(routeProduct)
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 
-const routeCart = path.join(__dirname, "data", "carts.json")
-const cartManager = new CartManager(routeCart)
+//const routeProduct = path.join(__dirname, "data", "products.json")
+//const productManager = new ProductManager(routeProduct)
+
+//const routeCart = path.join(__dirname, "data", "carts.json")
+//const cartManager = new CartManager(routeCart)
+
 
 
 //Metodos de products
 
+/*
 app.get('/api/products', async (req, res) => {
     try {
         const products = await productManager.getProducts();
@@ -89,11 +97,11 @@ app.put('/api/products/:pid', async (req, res) => {
     }
 })
 
-
+*/
 
 
 //Metodos de carts
-
+/*
 app.post('/api/carts', async (req, res) => {
     try {
         const newCart = await cartManager.addCart();
@@ -128,7 +136,7 @@ app.get('/api/carts/:cid', async (req, res) => {
         res.status(500).json({ error: "Error en el servidor" });
     }
 })
-
+*/
 
 
 // ----------------------------------------VER ESTO DE ABAJO-------------------------------------------
