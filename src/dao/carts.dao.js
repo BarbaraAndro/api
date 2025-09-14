@@ -1,14 +1,14 @@
-const fs = require('fs/promises')
+const fs = require("fs").promises;
 const crypto = require('crypto')
 
-class CartManager {
-    constructor(path) {
-        this.path = path;
+class CartsDao {
+    constructor(filePath) {
+        this.filePath = filePath;
     }
 
     async getCartById(id) {
         try {
-            const data = await fs.readFile(this.path, "utf8");
+            const data = await fs.readFile(this.filePath, "utf8");
             const carts = JSON.parse(data);
             const cart = carts.find((prod) => String(prod.id) === String(id))
             if (cart) {
@@ -25,11 +25,11 @@ class CartManager {
 
     async addCart() {
         try {
-            const fileData = await fs.readFile(this.path, "utf8");
+            const fileData = await fs.readFile(this.filePath, "utf8");
             let carts = JSON.parse(fileData);
             const newCart = { id: crypto.randomUUID(), products: [] }
             carts.push(newCart);
-            await fs.writeFile(this.path, JSON.stringify(carts, null, 2))
+            await fs.writeFile(this.filePath, JSON.stringify(carts, null, 2))
             return newCart;
         } catch (error) {
 
@@ -39,7 +39,7 @@ class CartManager {
 
     async addProductToCart(cid, pid) {
         try {
-            const fileData = await fs.readFile(this.path, "utf8");
+            const fileData = await fs.readFile(this.filePath, "utf8");
             let carts = JSON.parse(fileData);
             const cart = carts.find((cart) => String(cart.id) === String(cid));
             const productInCart = cart.products.find((p) => String(p.product) === String(pid));
@@ -48,13 +48,13 @@ class CartManager {
             } else {
                 cart.products.push({ product: pid, quantity: 1 });
             }
-            await fs.writeFile(this.path, JSON.stringify(carts, null, 2))
+            await fs.writeFile(this.filePath, JSON.stringify(carts, null, 2))
             return cart;
         } catch (error) {
 
         }
     }
+
 }
 
-
-module.exports = CartManager;
+module.exports = CartsDao;

@@ -1,26 +1,23 @@
-const fs = require('fs/promises')
+const fs = require("fs").promises;
 const crypto = require('crypto')
 
-class ProductManager {
-    constructor(path) {
-        this.path = path;
+class ProductsDao {
+    constructor(filePath) {
+        this.filePath = filePath;
     }
 
-    //getProducts
     async getProducts() {
         try {
-            const data = await fs.readFile(this.path, "utf8");
+            const data = await fs.readFile(this.filePath, "utf8");
             return JSON.parse(data);
         } catch (error) {
             //Ver que hacer con el error
         }
     }
 
-    //getProductsById
-
     async getProductsById(id) {
         try {
-            const data = await fs.readFile(this.path, "utf8");
+            const data = await fs.readFile(this.filePath, "utf8");
             const products = JSON.parse(data);
             const product = products.find((prod) => String(prod.id) === String(id))
             if (product) {
@@ -35,46 +32,44 @@ class ProductManager {
 
     }
 
-    //addProduct
     async addProduct(newData) {
         try {
             const { title, description, code, price, status, stock, category, thumbnails } = newData
             const newProduct = { id: crypto.randomUUID(), title, description, code, price, status, stock, category, thumbnails }
-            const fileData = await fs.readFile(this.path, "utf8");
+            const fileData = await fs.readFile(this.filePath, "utf8");
             let products = JSON.parse(fileData);
             products.push(newProduct);
-            await fs.writeFile(this.path, JSON.stringify(products, null, 2))
+            await fs.writeFile(this.filePath, JSON.stringify(products, null, 2))
             return newProduct;
         } catch (error) {
 
         }
     }
 
-    //updateProduct
+
     async updateProduct(id, newData){
         try {
-            //const { title, description, code, price, status, stock, category, thumbnails } = data;
-            const data = await fs.readFile(this.path, "utf8");
+            const data = await fs.readFile(this.filePath, "utf8");
             const products = JSON.parse(data);
             const index = products.findIndex(prod => String (prod.id) === String(id));
             const product = products[index];
             Object.assign(product, newData);
             products[index]= product;
-            await fs.writeFile(this.path, JSON.stringify(products, null, 2))
+            await fs.writeFile(this.filePath, JSON.stringify(products, null, 2))
         } catch (error) {
             
         }
     }
 
-    //deleteFile
+
     async deleteProduct(id) {
         try {
-            const data = await fs.readFile(this.path, "utf8");
+            const data = await fs.readFile(this.filePath, "utf8");
             let products = JSON.parse(data);
             const existe = products.some((prod) => String(prod.id) === String(id))
             if (existe){
                 products = products.filter((prod) => String(prod.id) !== String(id))
-                await fs.writeFile(this.path, JSON.stringify(products, null, 2))
+                await fs.writeFile(this.filePath, JSON.stringify(products, null, 2))
                 return true;
             }else{
                 return false;
@@ -84,5 +79,4 @@ class ProductManager {
         }
     }
 }
-
-module.exports = ProductManager;
+module.exports = ProductsDao;
