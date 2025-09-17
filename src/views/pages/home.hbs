@@ -1,0 +1,18 @@
+<div>
+    {{> header}}
+    <h1 class="titulo">Productos</h1>
+    <div>
+        <ul class="card_container">
+            {{#each products}}
+            <li class="card">
+                <img src="{{thumbnails}}" alt="{{title}}">
+                <div class="card_text">
+                    <h2>{{title}}</h2>
+                    <p>{{description}}</p>
+                    <h3>${{price}}</h3>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

@@ -1,6 +1,7 @@
-const app = require('./src/app');
+const server = require('./src/app');
 const PORT = 8080;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => { //volver esto a app
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
-})
+});
+

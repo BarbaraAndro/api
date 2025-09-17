@@ -1,0 +1,33 @@
+<div>
+    {{> header}}
+    <div>
+        <h1 class="titulo">Productos</h1>
+        <form id="addForm" class="form" action="">
+            <input id="input_nombre" type="text" class="input" placeholder="Nombre">
+            <input id="input_descripcion" type="text" class="input" placeholder="Descripción">
+            <input id="input_codigo" type="text" class="input" placeholder="Codigo">
+            <input id="input_precio" type="number" class="input" placeholder="Precio">
+            <input id="input_estado" type="text" class="input" placeholder="Estado">
+            <input id="input_stock" type="number" class="input" placeholder="Stock">
+            <input id="input_categoria" type="text" class="input" placeholder="Categoria">
+            <input id="input_imagen" type="text" class="input" placeholder="Imagen">
+            <button type="submit" class="btn">Agregar producto</button>
+            {{!-- Ver si pongo link o multer para la imagen --}}
+        </form>
+        <div>
+            <ul class="card_container">
+                {{#each products}}
+                <li class="card" data-id="{{id}}">
+                    <img src="{{thumbnails}}" alt="{{title}}">
+                    <div class="card_text">
+                        <h2>{{title}}</h2>
+                        <p>{{description}}</p>
+                        <h3>${{price}}</h3>
+                    </div>
+                    <button class="btn btnDelete" data-id="{{id}}">❌</button>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>

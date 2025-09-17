@@ -15,6 +15,16 @@ getProducts = async (req, res) => {
         res.status(500).json({ error: "Error en el servidor" });
     }
 }
+async getProductsSocket() {
+    try {
+        const products = await productsDao.getProducts();
+        return products;
+    } catch (error) {
+        console.error("Error Controller getProductsSocket:", error);
+        return [];
+    }
+}
+
 
 getProductsById = async (req, res) => {
     try {
@@ -46,6 +56,15 @@ addProduct = async (req, res) => {
     }
 }
 
+async addProductSocket(newData) {
+        try {
+            const newProduct = await productsDao.addProduct(newData);
+            return newProduct; // para emitir via socket
+        } catch (error) {
+            console.error("Error Controller addProductSocket:", error);
+            return null;
+        }
+    }
 
 deleteProduct = async (req, res) => {
     try {
@@ -60,6 +79,20 @@ deleteProduct = async (req, res) => {
         res.status(500).json({ error: "Error en el servidor" });
     }
 }
+
+async deleteProductSocket(productId) {
+        try {
+            const deletedId = await productsDao.deleteProduct(productId);
+            if (!deletedId) {
+                console.warn("Producto no encontrado:", productId);
+                return null;
+            }
+            return deletedId;
+        } catch (error) {
+            console.error("Error Controller deleteProductSocket:", error);
+            return null;
+        }
+    }
 
 updateProduct = async (req, res) => {
     try {
