@@ -1,6 +1,7 @@
 const express = require('express')
 const routes = require('./routes/index')
 const app = express();
+const fs = require("fs");
 const path = require("path")
 const { paths } = require("./config/config");
 const products = require("./data/products.json")
@@ -19,13 +20,20 @@ app.set("view engine", "hbs")
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); //No se si se usa
+app.use(express.urlencoded({ extended: true }));
 app.use("/public", express.static(paths.public));
 
+function getProducts() {
+    const data = fs.readFileSync(path.join(__dirname, "data/products.json"), "utf-8");
+    return JSON.parse(data);
+}
+
 app.get("/", (req, res) => {
+    const products = getProducts()
     return res.render("pages/home", { products })
 })
 app.get("/products", (req, res) => {
+    const products = getProducts()
     return res.render("pages/realTimeProducts", { products })
 })
 app.use("/api", routes);
@@ -49,9 +57,9 @@ io.on("connection", (socket) => {
 
     socket.on("deleteProduct", async (productId) => {
         console.log("deleteProduct recibido:", productId);
-    await productsController.deleteProductSocket(productId);
-    console.log("emitiendo productDeleted:", productId);
-    io.emit("productDeleted", productId);
+        await productsController.deleteProductSocket(productId);
+        console.log("emitiendo productDeleted:", productId);
+        io.emit("productDeleted", productId);
     });
 
     socket.on("disconnect", (data) => {

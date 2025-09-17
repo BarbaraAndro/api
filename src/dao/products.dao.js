@@ -11,7 +11,6 @@ class ProductsDao {
             const data = await fs.readFile(this.filePath, "utf8");
             return JSON.parse(data);
         } catch (error) {
-            //Ver que hacer con el error
         }
     }
 

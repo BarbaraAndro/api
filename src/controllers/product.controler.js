@@ -59,7 +59,7 @@ addProduct = async (req, res) => {
 async addProductSocket(newData) {
         try {
             const newProduct = await productsDao.addProduct(newData);
-            return newProduct; // para emitir via socket
+            return newProduct;
         } catch (error) {
             console.error("Error Controller addProductSocket:", error);
             return null;

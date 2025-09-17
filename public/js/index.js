@@ -4,16 +4,9 @@ const btndelete = document.getElementById("btnDelete");
 const productsContainer = document.querySelector(".card_container");
 
 productsContainer.addEventListener("click", (e) => {
-    console.log('entre a eliminar producto');
-
     const btn = e.target.closest(".btnDelete");
-    console.log("imprimo btn",btn)
-    if (!btn) return; // si no es botón, salir
-
+    if (!btn) return;
     const productId = btn.dataset.id;
-    console.log("Eliminar producto con ID:", productId);
-
-    // Emitimos al servidor
     socket.emit("deleteProduct", productId);
 });
 socket.on("productDeleted", (productId) => {
@@ -22,7 +15,6 @@ socket.on("productDeleted", (productId) => {
     if (card) card.remove();
 });
 
-// Listener que actualiza los productos en tiempo real
 socket.on("updateProducts", (products) => {
     console.log("Recibí productos:", products);
     productsContainer.innerHTML += `
@@ -38,12 +30,8 @@ socket.on("updateProducts", (products) => {
     `;
 });
 
-
-
-// Listener del formulario
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-
     const newProduct = {
         title: document.getElementById("input_nombre").value,
         description: document.getElementById("input_descripcion").value,
@@ -54,9 +42,7 @@ form.addEventListener("submit", (e) => {
         category: document.getElementById("input_categoria").value,
         thumbnails: document.getElementById("input_imagen").value,
     };
-
     socket.emit("newProduct", newProduct);
-
     form.reset();
 });
 
