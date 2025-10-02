@@ -17,7 +17,6 @@ class CartController {
             const pid = req.params.pid;
             const cid = req.params.cid;
             const cart = await cartsDao.addProductToCart(cid, pid);
-            //return res.render("pages/cart", { cart });
             return res.json({ success: true, cart });
         } catch (error) {
             res.status(500).json({ error: "Error en el servidor" });
@@ -74,7 +73,7 @@ class CartController {
     replaceCartProducts = async (req, res) => {
         try {
             const cid = req.params.cid;
-            const newProducts = req.body.products; // esperamos array en el body
+            const newProducts = req.body.products;
             if (!Array.isArray(newProducts)) {
                 return res.status(400).json({ error: "Se espera un array de productos" });
             }

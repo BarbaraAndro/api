@@ -3,11 +3,10 @@ const app = express();
 const path = require("path");
 const { paths } = require("./config/config");
 
-
 //MONGOOSE
 const config = require("./config/config");
 const mongoose = require("mongoose")
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 mongoose.connect(config.MONGO_URI)
     .then(() => console.log("MongodB connected"))
     .catch((error) => console.log("Error al conectarse a MongodB", error));

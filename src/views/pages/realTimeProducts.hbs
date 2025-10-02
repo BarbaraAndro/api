@@ -12,7 +12,6 @@
             <input id="input_categoria" type="text" class="input" placeholder="Categoria">
             <input id="input_imagen" type="text" class="input" placeholder="Imagen">
             <button type="submit" class="btn">Agregar producto</button>
-            {{!-- Ver si pongo link o multer para la imagen --}}
         </form>
         <div>
             <ul class="card_container">
@@ -29,14 +28,5 @@
                 {{/each}}
             </ul>
         </div>
-        {{!-- <div class="prevNextButton"> 
-            {{#if hasPrevPage}}
-            <a class="btn" href="/api/products/realtime?page={{prevPage}}&limit={{limit}}">Anterior</a>
-            {{/if}}
-            <span class="btn" >{{currentPage}} - {{totalPages}}</span>
-            {{#if hasNextPage}}
-            <a class="btn" href="/api/products/realtime?page={{nextPage}}&limit={{limit}}">Siguiente</a>
-            {{/if}}
-        </div>--}}
     </div>
 </div>

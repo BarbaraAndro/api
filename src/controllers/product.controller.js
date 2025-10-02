@@ -5,60 +5,20 @@ class ProductController {
     constructor() {
         this.productsDao = new ProductsDao();
     }
-
-
-    // getProducts = async (req, res) => {
-    //     try {
-    //         const { page = 1, limit = 10, sort, category } = req.query;
-    //         const options = {
-    //             page: parseInt(page),
-    //             limit: parseInt(limit),
-    //             lean: true,
-    //         };
-    //         if (sort === "asc") options.sort = { price: 1 };
-    //         else if (sort === "desc") options.sort = { price: -1 };
-    //         const query = {};
-    //         if (category) query.category = category;
-    //         const result = await productsDao.getProducts(query, options);
-    //         return res.render("pages/home", {
-    //             products: result.docs,
-    //             currentPage: result.page,
-    //             totalPages: result.totalPages,
-    //             hasPrevPage: result.hasPrevPage,
-    //             hasNextPage: result.hasNextPage,
-    //             prevPage: result.prevPage,
-    //             nextPage: result.nextPage,
-    //             limit: options.limit,
-    //             sort,
-    //             category,
-    //         });
-    //     } catch (error) {
-    //         console.error(error);
-    //         res.status(500).json({ error: "Error en el servidor" });
-    //     }
-    // }
-
     getProducts = async (req, res) => {
     try {
         const { page = 1, limit = 10, sort, category, stock } = req.query;
-
         const options = {
             page: parseInt(page),
             limit: parseInt(limit),
             lean: true,
         };
-
         if (sort === "asc") options.sort = { price: 1 };
         else if (sort === "desc") options.sort = { price: -1 };
-
         const query = {};
         if (category) query.category = category;
-
-        // 🔥 Si pasamos stock=true, solo productos con stock > 0
         if (stock === "true") query.stock = { $gt: 0 };
-
         const result = await productsDao.getProducts(query, options);
-
         return res.render("pages/home", {
             products: result.docs,
             currentPage: result.page,
@@ -70,7 +30,7 @@ class ProductController {
             limit: options.limit,
             sort,
             category,
-            stock, // 👈 lo mandamos para que handlebars sepa que está activado
+            stock,
         });
     } catch (error) {
         console.error(error);

@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const pid = btn.dataset.id;
             let cid = localStorage.getItem("cartId");
             if (!cid) {
-                
                 const res = await fetch("/api/carts", { method: "POST" });
                 if (!res.ok) {
                     alert("Error creando el carrito ❌");
@@ -56,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.querySelector(".cart_container");
-    if (!container) return console.warn("No existe .cart_container");
+    if (!container) return;
     container.addEventListener("click", async (e) => {
         const btn = e.target.closest(".btnDeleteOfCart");
         if (!btn) return;
@@ -66,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const res = await fetch(`/api/carts/${cid}/product/${pid}`, { method: "DELETE" });
             if (!res.ok) throw new Error("Error eliminando producto");
-            btn.closest("li.card").remove(); // elimina del DOM
+            btn.closest("li.card").remove();
         } catch (err) {
             console.error(err);
             alert("Error eliminando producto");
