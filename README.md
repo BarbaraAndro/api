@@ -1,7 +1,7 @@
 # API Ecommerce  🛒
 Este proyecto fue creado como proyecto final del curso de Programación Backend I: Desarrollo Avanzado de Backend de Coderhouse. Este es una aplicación de Node.js con Express que utiliza MongoDB y mongoose para la persistencia de datos. Las vistas de frontend se maneja con Handlebars. Se implementa un sistema de productos con paginación, orden asc/desc de precios y filtro segun categorias o productos disponibles. A su vez cuenta con un carrito de compras con CRUD completo. Además, integra Socket.IO para actualizaciones en tiempo real de los productos el cual tambien permite mediante un formulario en el front end, agregar nuevos productos.
 
-![Inicio](/img/home-view.jpeg) 
+![Pantalla de inicio](public/img/home-view.jpeg)
 
 ## Librerias 📖
 
