@@ -6,7 +6,7 @@
             <input id="input_nombre" type="text" class="input" placeholder="Nombre">
             <input id="input_descripcion" type="text" class="input" placeholder="Descripción">
             <input id="input_codigo" type="text" class="input" placeholder="Codigo">
-            <input id="input_precio" type="number" class="input" placeholder="Precio">
+            <input id="input_precio" type="number" step="0.01" class="input" placeholder="Precio">
             <input id="input_estado" type="text" class="input" placeholder="Estado">
             <input id="input_stock" type="number" class="input" placeholder="Stock">
             <input id="input_categoria" type="text" class="input" placeholder="Categoria">
@@ -17,17 +17,26 @@
         <div>
             <ul class="card_container">
                 {{#each products}}
-                <li class="card" data-id="{{id}}">
+                <li class="card" data-id="{{_id}}">
                     <img src="{{thumbnails}}" alt="{{title}}">
                     <div class="card_text">
                         <h2>{{title}}</h2>
                         <p>{{description}}</p>
                         <h3>${{price}}</h3>
                     </div>
-                    <button class="btn btnDelete" data-id="{{id}}">❌</button>
+                    <button class="btn btnDelete" data-id="{{_id}}">❌</button>
                 </li>
                 {{/each}}
             </ul>
         </div>
+        {{!-- <div class="prevNextButton"> 
+            {{#if hasPrevPage}}
+            <a class="btn" href="/api/products/realtime?page={{prevPage}}&limit={{limit}}">Anterior</a>
+            {{/if}}
+            <span class="btn" >{{currentPage}} - {{totalPages}}</span>
+            {{#if hasNextPage}}
+            <a class="btn" href="/api/products/realtime?page={{nextPage}}&limit={{limit}}">Siguiente</a>
+            {{/if}}
+        </div>--}}
     </div>
 </div>

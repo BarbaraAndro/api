@@ -1,0 +1,21 @@
+<div>
+    {{> header}}
+    <h3 class="titulo">Carrito: {{cart._id}}</h3>
+    <div class="cart">
+        <button class="btn btnEmptyCart" data-id="{{cart._id}}">Vaciar carrito</button>
+        <ul class="cart_container">
+            {{#each cart.products}}
+            <li class="card" data-id="{{product._id}}">
+                <img src="{{product.thumbnails}}" alt="{{product.title}}">
+                <div class="card_text">
+                    <h2>{{product.title}}</h2>
+                    <p>{{product.description}}</p>
+                    <h3>${{product.price}}</h3>
+                    <p>Cantidad: {{quantity}}</p>
+                </div>
+                <button class="btn btnDeleteOfCart" data-id="{{product._id}}">❌</button>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

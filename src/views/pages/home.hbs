@@ -11,8 +11,18 @@
                     <p>{{description}}</p>
                     <h3>${{price}}</h3>
                 </div>
+                <button class="btn btnAddProduct" data-id="{{_id}}">Añadir al carrito</button>
             </li>
             {{/each}}
         </ul>
+    </div>
+    <div class="prevNextButton">
+        {{#if hasPrevPage}}
+        <a class="btn" href="/api/products?page={{prevPage}}&limit={{limit}}{{#if sort}}&sort={{sort}}{{/if}}{{#if category}}&category={{category}}{{/if}}{{#if stock}}&stock={{stock}}{{/if}}">Anterior</a>
+        {{/if}}
+        <span class="btn">{{currentPage}} - {{totalPages}}</span>
+        {{#if hasNextPage}}
+        <a class="btn" href="/api/products?page={{nextPage}}&limit={{limit}}{{#if sort}}&sort={{sort}}{{/if}}{{#if category}}&category={{category}}{{/if}}{{#if stock}}&stock={{stock}}{{/if}}">Siguiente</a>
+        {{/if}}
     </div>
 </div>

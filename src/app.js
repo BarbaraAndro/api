@@ -1,15 +1,19 @@
-const express = require('express')
-const routes = require('./routes/index')
+const express = require('express');
 const app = express();
-const fs = require("fs");
-const path = require("path")
+const path = require("path");
 const { paths } = require("./config/config");
-const products = require("./data/products.json")
-const handlebar = require("express-handlebars");
-const { Server } = require("socket.io")
-const http = require("http");
-const server = http.createServer(app);
 
+
+//MONGOOSE
+const config = require("./config/config");
+const mongoose = require("mongoose")
+require("dotenv").config();
+mongoose.connect(config.MONGO_URI)
+    .then(() => console.log("MongodB connected"))
+    .catch((error) => console.log("Error al conectarse a MongodB", error));
+
+//HANDLEBARS    
+const handlebar = require("express-handlebars");
 app.engine("hbs", handlebar.engine({
     extname: ".hbs",
     defaultLayout: "main",
@@ -23,36 +27,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/public", express.static(paths.public));
 
-function getProducts() {
-    const data = fs.readFileSync(path.join(__dirname, "data/products.json"), "utf-8");
-    return JSON.parse(data);
-}
-
-app.get("/", (req, res) => {
-    const products = getProducts()
-    return res.render("pages/home", { products })
-})
-app.get("/products", (req, res) => {
-    const products = getProducts()
-    return res.render("pages/realTimeProducts", { products })
-})
+//ROUTES
+const routes = require('./routes/index');
 app.use("/api", routes);
 
+//ERROR PAGE
 app.use((req, res) => {
     res.status(404).send('404 - Page not found');
 });
 
-const ProductController = require("../src/controllers/product.controler");
+//SERVER SOCKET.IO
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+const ProductController = require("./controllers/product.controller");
 const productsController = new ProductController();
 
-const io = new Server(server);
 io.on("connection", (socket) => {
     console.log(`Usuario ID: ${socket.id} conectado`);
 
-    socket.on("newProduct", async (newProduct) => {
-        const savedProduct = await productsController.addProductSocket(newProduct);
-        const updatedProducts = await productsController.getProductsSocket();
-        io.emit("updateProducts", savedProduct);
+    socket.on("newProduct", async (newProductData) => {
+        const newProduct = await productsController.addProductSocket(newProductData);
+        if (newProduct) io.emit("updateProducts", newProduct);
     });
 
     socket.on("deleteProduct", async (productId) => {

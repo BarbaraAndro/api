@@ -36,11 +36,18 @@ li {
     padding: 2rem;
 }
 
-.card_container {
+.cart{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+.cart_container, .card_container {
+    justify-self: center;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 50px;
+    margin-bottom: 4rem;
 }
 
 .card {
@@ -64,10 +71,13 @@ li {
     padding: 10px;
     background-color: rgb(250, 147, 147);
     border-radius: 15px;
-    border-color: rgb(250, 147, 147);
-    /* width: 40px; */
+    border: none;
     align-self: center;
     margin-bottom: 10px;
+    cursor: pointer;
+}
+.btn:hover{
+    background-color: rgb(253, 84, 84);
 }
 
 .form {
@@ -84,4 +94,13 @@ li {
     border-radius: 15px;
     border: none;
     padding: 10px;
+}
+
+.prevNextButton{
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
 }

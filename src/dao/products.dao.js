@@ -1,81 +1,68 @@
-const fs = require("fs").promises;
-const crypto = require('crypto')
+const Products = require("../models/products.models");
+const mongoose = require("mongoose");
 
 class ProductsDao {
-    constructor(filePath) {
-        this.filePath = filePath;
-    }
 
-    async getProducts() {
-        try {
-            const data = await fs.readFile(this.filePath, "utf8");
-            return JSON.parse(data);
-        } catch (error) {
-        }
+async getProducts(query = {}, options = {}) {
+    try {
+        const finalFilter = { deleted: false, ...query };
+        const products = await Products.paginate(finalFilter, options);
+        return products;
+    } catch (error) {
+        console.error("Error al obtener los productos", error);
+        throw error;
     }
+}
+async getAllProductsForRealtime() {
+    try {
+        return await Products.find({ deleted: false }).lean();
+    } catch (error) {
+        console.error("Error al obtener productos para Realtime:", error);
+        return [];
+    }
+}
 
     async getProductsById(id) {
         try {
-            const data = await fs.readFile(this.filePath, "utf8");
-            const products = JSON.parse(data);
-            const product = products.find((prod) => String(prod.id) === String(id))
-            if (product) {
-                return product;
-            } else {
-                return ("Producto no encontrado");
-            }
-
+            if (!id) throw new Error("ID no proporcionado");
+            const products = await Products.findById(id);
+            return products;
         } catch (error) {
-
+            console.error("Error al obtener el producto", error)
         }
-
     }
 
-    async addProduct(newData) {
+    async addProduct(data) {
         try {
-            const { title, description, code, price, status, stock, category, thumbnails } = newData
-            const newProduct = { id: crypto.randomUUID(), title, description, code, price, status, stock, category, thumbnails }
-            const fileData = await fs.readFile(this.filePath, "utf8");
-            let products = JSON.parse(fileData);
-            products.push(newProduct);
-            await fs.writeFile(this.filePath, JSON.stringify(products, null, 2))
+            const newProduct = new Products(data);
+            await newProduct.save();
             return newProduct;
         } catch (error) {
-
+            console.error("Error agregando un producto", error)
+            throw error;
         }
     }
 
-
-    async updateProduct(id, newData){
+    async updateProduct(id, data) {
         try {
-            const data = await fs.readFile(this.filePath, "utf8");
-            const products = JSON.parse(data);
-            const index = products.findIndex(prod => String (prod.id) === String(id));
-            const product = products[index];
-            Object.assign(product, newData);
-            products[index]= product;
-            await fs.writeFile(this.filePath, JSON.stringify(products, null, 2))
+            const productsUpdated = await Products.findByIdAndUpdate(id, data, { new: true });
+            return productsUpdated;
         } catch (error) {
-            
+            console.error("Error actualizando el producto", error)
         }
     }
 
-
-    async deleteProduct(id) {
+    async softDeleteProduct(id) {
         try {
-            const data = await fs.readFile(this.filePath, "utf8");
-            let products = JSON.parse(data);
-            const existe = products.some((prod) => String(prod.id) === String(id))
-            if (existe){
-                products = products.filter((prod) => String(prod.id) !== String(id))
-                await fs.writeFile(this.filePath, JSON.stringify(products, null, 2))
-                return true;
-            }else{
-                return false;
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new Error("ID no válido");
             }
+            const productSoftDeleted = await Products.findByIdAndUpdate(id, { deleted: true }, { new: true });
+            return productSoftDeleted;
         } catch (error) {
-
+            console.error("Error borrando el producto", error)
         }
     }
 }
+
 module.exports = ProductsDao;
